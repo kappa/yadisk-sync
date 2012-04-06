@@ -1,0 +1,6 @@
+[auth]
+login=kappa@ya.ru
+password=пароль
+[paths]
+webdav=/home/kappa/.yadisk-davfs
+folder=/home/kappa/YandexDisk
