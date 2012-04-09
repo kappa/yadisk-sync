@@ -15,12 +15,16 @@ https://webdav.yandex.ru	/home/kappa/.yadisk-davfs	davfs	noauto,user	0 0
 
 4. sudo usermod -a -G davfs2 kappa # добавить пользователя в группу davfs2
 
-4.5. теперь можно сделать mount /home/kappa/.yadisk-davfs2 без sudo
+4.5. теперь можно сделать mkdir /home/kappa/.yadisk-davfs && mount /home/kappa/.yadisk-davfs без sudo
+
+4.6. mkdir -p /home/kappa/YandexDisk/Documents
 
 5. ~/.yadiskrc по примеру
 
+5.5. chmod 600 /home/kappa/.yadiskrc
+
 6. нужна пачка перловых модулей, а именно:
-uni::perl, autodie, Config::Tiny, AnyEvent::Inotify::Simple, EV, AnyEvent::XMPP
+uni::perl autodie Config::Tiny AnyEvent::Inotify::Simple EV AnyEvent::XMPP
 поставить их можно например так:
 $ curl -L http://cpanmin.us | perl - --self-upgrade
 $ cpanm <список модулей через пробел>
