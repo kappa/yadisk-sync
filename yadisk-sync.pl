@@ -4,7 +4,10 @@ use autodie;
 
 use Config::Tiny;
 use AnyEvent::Inotify::Simple;
+use AnyEvent::XMPP::IM::Connection;
 use EV;
+
+our $VERSION = '0.2';
 
 my $cfg = Config::Tiny->read("$ENV{HOME}/.yadiskrc")
     or die "Need ~/.yadiskrc config\n";
@@ -19,7 +22,7 @@ my $inotify = AnyEvent::Inotify::Simple->new(
         given ($event) {
             when ([qw/access open close/]) { }
             default {
-                say "$event --> $file";
+                say "local inotify: $event --> $file";
                 $is_dirty = 1;
             }
         }
@@ -40,5 +43,68 @@ my $timer = AnyEvent->timer (after => 5, interval => 10, cb => sub {
     	$is_syncing = $is_dirty = 0;
     }
 });
+
+my $xmpp = AnyEvent::XMPP::IM::Connection->new(
+    jid         => $cfg->{auth}->{login},
+    resource    => 'YandexDisk-kappaclient',
+    host        => 'push.xmpp.yandex.ru',
+    port        => 5222,
+    password    => $cfg->{auth}->{password},
+    dont_retrieve_roster => 1,
+    initial_presence => undef,
+);
+
+# handle incoming iq get stanzas
+$xmpp->reg_cb(iq_get_request_xml => sub {
+    my ($con, $node, $rhandled) = @_;
+
+    if    ($node->find_all(['urn:xmpp:ping', 'ping'])) {
+    	$con->reply_iq_result($node);
+    	$$rhandled = 1;
+    }
+    elsif ($node->find_all(['jabber:iq:version', 'query'])) {
+    	$con->reply_iq_result($node,
+            {
+            	defns => 'jabber:iq:version',
+            	node => {
+            	    name => 'query',
+            	    childs => [
+                        { name => 'name', childs => ['yadisk-sync.pl'] },
+                        { name => 'version', childs => [$VERSION] },
+                        { name => 'os', childs => ['Linux'] },
+                    ],
+            	},
+            }
+        );
+    	$$rhandled = 1;
+    }
+});
+
+# handle incoming iq set stanzas
+$xmpp->reg_cb(iq_set_request_xml => sub {
+    my ($con, $node, $rhandled) = @_;
+
+    if ($node->find_all(['yandex:push:disk', 'query'])) {
+    	$is_dirty = 1;
+    	say "remote XMPP push: " . $node->as_string;
+    	$$rhandled = 1;
+    }
+});
+
+# start
+$xmpp->reg_cb(session_ready => sub {
+    my $con = shift;
+
+    $con->send_iq('set',
+        {
+            defns   => 'yandex:push:disk',
+            node    => { name => 's', ns => 'yandex:push:disk' },
+        },
+        undef,
+        to => $cfg->{auth}->{login},
+    );
+});
+
+$xmpp->connect;
 
 EV::loop;
