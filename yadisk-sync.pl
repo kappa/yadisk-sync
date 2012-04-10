@@ -15,6 +15,11 @@ my $cfg = Config::Tiny->read("$ENV{HOME}/.yadiskrc")
 my $is_dirty = 1;   # ensure a sync on start
 my $is_syncing = 0;
 
+# We have 3 event sources:
+# 1. inotify is a recursive inotify(2) watcher for ~/YandexDisk
+# 2. timer is a ticking timer with 10s interval
+# 3. xmpp is an XMPP client receiving push events from the cloud
+
 my $inotify = AnyEvent::Inotify::Simple->new(
     directory      => $cfg->{paths}->{folder},
     event_receiver => sub {
