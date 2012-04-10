@@ -22,6 +22,7 @@ $xmpp->reg_cb(debug_recv => sub { say "S: $_[1]" });
 $xmpp->reg_cb(debug_send => sub { say "C: $_[1]" });
 $xmpp->reg_cb(error => sub { warn "xmpp error: " . $_[1]->string . "\n" });
 
+# handle incoming iq get stanzas
 $xmpp->reg_cb(iq_get_request_xml => sub {
     my ($con, $node, $rhandled) = @_;
 
@@ -36,18 +37,9 @@ $xmpp->reg_cb(iq_get_request_xml => sub {
             	node => {
             	    name => 'query',
             	    childs => [
-                        {
-                            name => 'name',
-                            childs => ['yadisk-sync.pl'],
-                        },
-                        {
-                            name => 'version',
-                            childs => ['0.1'],
-                        },
-                        {
-                            name => 'os',
-                            childs => ['Linux'],
-                        },
+                        { name => 'name', childs => ['yadisk-sync.pl'] },
+                        { name => 'version', childs => ['0.1'] },
+                        { name => 'os', childs => ['Linux'] },
                     ],
             	},
             }
@@ -56,6 +48,17 @@ $xmpp->reg_cb(iq_get_request_xml => sub {
     }
 });
 
+# handle incoming iq set stanzas
+$xmpp->reg_cb(iq_set_request_xml => sub {
+    my ($con, $node, $rhandled) = @_;
+
+    if ($node->find_all(['yandex:push:disk', 'query'])) {
+    	say "Yay, we got pushed";
+    	$$rhandled = 1;
+    }
+});
+
+# start
 $xmpp->reg_cb(session_ready => sub {
     my $con = shift;
 
