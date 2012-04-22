@@ -15,7 +15,7 @@ root-setup:
 	@echo "The system has davfs2, perl 5.10 and unison, good."
 	
 	@test `id -u` -eq 0 || (echo " *** Need to run 'make root-setup' as root with sudo" && exit 1)
-#	@echo "https://webdav.yandex.ru	${DAVFS_MP}	davfs	noauto,user	0 0" >> /etc/fstab
+	@echo "https://webdav.yandex.ru	${DAVFS_MP}	davfs	noauto,user	0 0" >> /etc/fstab
 	@echo "Added fstab entry."
 
 	@echo "You need to enable davfs mounting for normal users. Press Enter" && read DUMMY
@@ -26,7 +26,7 @@ root-setup:
 
 	@echo "Now run 'make setup' to finish non-root configuration."
 
-# README: 0, 1, 3, 4, 6?
+# README: 0, 1, 3, 4, 6
 
 setup:
 # README: 2, 2.5, 4.5, 4.6, 5, 5.5
