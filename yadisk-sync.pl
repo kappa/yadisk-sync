@@ -5,7 +5,7 @@ use autodie;
 use Config::Tiny;
 use AnyEvent::Inotify::Simple;
 use AnyEvent::XMPP::IM::Connection;
-use EV;
+use Linux::Proc::Mounts;
 
 our $VERSION = '0.2';
 
@@ -14,6 +14,12 @@ my $cfg = Config::Tiny->read("$ENV{HOME}/.yadiskrc")
 
 my $is_dirty = 1;   # ensure a sync on start
 my $is_syncing = 0;
+
+my $mounts = Linux::Proc::Mounts->read;
+unless (@{$mounts->at($cfg->{paths}->{webdav})}) {
+    say "Mounting WebDAV.";
+    system(mount => $cfg->{paths}->{webdav});
+}
 
 # We have 3 event sources:
 # 1. inotify is a recursive inotify(2) watcher for ~/YandexDisk
