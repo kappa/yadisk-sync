@@ -7,7 +7,7 @@ use AnyEvent::Inotify::Simple;
 use AnyEvent::XMPP::IM::Connection;
 use Linux::Proc::Mounts;
 
-our $VERSION = '0.2';
+our $VERSION = '0.21';
 
 my $cfg = Config::Tiny->read("$ENV{HOME}/.yadiskrc")
     or die "Need ~/.yadiskrc config\n";

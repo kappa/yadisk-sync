@@ -1,0 +1,9 @@
+0.21	Apr 22 19:21 MSK 2012
+	- Support semi-automatic setup
+	- Release to Github
+
+0.2		Apr 11 03:56 MSK 2012
+	- Support XMPP push events from the cloud
+
+0.1		Apr 6 03:14 MSK 2012
+	- Initial internal release
