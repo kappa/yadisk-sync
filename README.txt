@@ -1,33 +1,10 @@
-Что нужно:
+Установка производится в 2 этапа:
 
-0. линукс с davfs2, unison, perl >5.10.
+1. sudo make root-setup
 
-1. Запись в fstab со скрытой точкой монтирования в $HOME вида:
-https://webdav.yandex.ru	/home/kappa/.yadisk-davfs	davfs	noauto,user	0 0
+2. make YANDEX_LOGIN=user@yandex.ru YANDEX_PASSWORD=password setup
 
-2. Секрет в ~/.davfs2/secrets вида:
-/home/kappa/.yadisk-davfs	kappa@yandex.ru	<ПАРОЛЬ>
+Всё, что делают эти команды, можно проделать и вручную. Смотрите
+README.manual.
 
-2.5. chown kappa:kappa ~/.davfs2/secrets && chmod 600 ~/.davfs2/secrets
-
-3. sudo dpkg-reconfigure davfs2 --> разрешить монтирование davfs2
-обычным пользователям (не знаю, как это делается не на Убунте).
-
-4. sudo usermod -a -G davfs2 kappa # добавить пользователя в группу davfs2
-
-4.5. теперь можно сделать mkdir /home/kappa/.yadisk-davfs && mount /home/kappa/.yadisk-davfs без sudo
-
-4.6. mkdir -p /home/kappa/YandexDisk/Documents
-
-5. ~/.yadiskrc по примеру
-
-5.5. chmod 600 /home/kappa/.yadiskrc
-
-6. нужна пачка перловых модулей, а именно:
-uni::perl autodie Config::Tiny AnyEvent::Inotify::Simple EV AnyEvent::XMPP
-поставить их можно например так:
-$ curl -L http://cpanmin.us | perl - --self-upgrade
-$ cpanm <список модулей через пробел>
-
-7. yadisk-sync.pl не демонизируется, пока лучше посматривать за ним в
-консоли.
+Это почти точно понадобится, если установка происходит не на Ubuntu.
