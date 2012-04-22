@@ -11,8 +11,15 @@ root-setup:
 	@perl -M5.10.0 -e1 > /dev/null || (echo " *** Need perl 5.10 or higher" && exit 1)
 # unison
 	@which unison > /dev/null || (echo " *** Need unison, try installing unison package" && exit 1)
-# XXX perl modules
 	@echo "The system has davfs2, perl 5.10 and unison, good."
+
+	@if which curl > /dev/null; then \
+		curl -L http://cpanmin.us | perl - --self-upgrade; \
+		cpanm uni::perl autodie Config::Tiny AnyEvent::Inotify::Simple EV AnyEvent::XMPP Linux::Proc::Mounts; \
+		echo "Installed Perl dependencies."; \
+	else \
+		echo " *** No curl found, install needed Perl pachages manually "; \
+	fi
 	
 	@test `id -u` -eq 0 || (echo " *** Need to run 'make root-setup' as root with sudo" && exit 1)
 	@echo "https://webdav.yandex.ru	${DAVFS_MP}	davfs	noauto,user	0 0" >> /etc/fstab
