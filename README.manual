@@ -1,3 +1,6 @@
+Это инструкция по РУЧНОЙ установке. Более простая установка описана в
+README.txt.
+
 Что нужно:
 
 0. линукс с davfs2, unison, perl >5.10.
@@ -24,7 +27,7 @@ https://webdav.yandex.ru	/home/kappa/.yadisk-davfs	davfs	noauto,user	0 0
 5.5. chmod 600 /home/kappa/.yadiskrc
 
 6. нужна пачка перловых модулей, а именно:
-uni::perl autodie Config::Tiny AnyEvent::Inotify::Simple EV AnyEvent::XMPP
+uni::perl autodie Config::Tiny AnyEvent::Inotify::Simple EV AnyEvent::XMPP Linux::Proc::Mounts
 поставить их можно например так:
 $ curl -L http://cpanmin.us | perl - --self-upgrade
 $ cpanm <список модулей через пробел>
