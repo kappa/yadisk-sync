@@ -112,4 +112,4 @@ $xmpp->reg_cb(session_ready => sub {
 
 $xmpp->connect;
 
-EV::loop;
+AnyEvent->condvar->recv;
