@@ -1,6 +1,9 @@
 #! /usr/bin/perl
 use uni::perl;
 
+# This was a debugging helper. Now obsolete!
+# Exists for the sake of AnyEvent::XMPP reference.
+
 use Config::Tiny;
 use AnyEvent::XMPP::IM::Connection;
 use EV;
