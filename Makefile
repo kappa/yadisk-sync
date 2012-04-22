@@ -5,6 +5,7 @@ default:
 	echo "No default make target, see README"
 
 root-setup:
+# README.manual: 0, 1, 3, 4, 6
 # check davfs2
 	@which mount.davfs > /dev/null || (echo " *** Need davfs support, try installing davfs2 package" && exit 1)
 # perl 5.10
@@ -13,15 +14,16 @@ root-setup:
 	@which unison > /dev/null || (echo " *** Need unison, try installing unison package" && exit 1)
 	@echo "The system has davfs2, perl 5.10 and unison, good."
 
+	@test `id -u` -eq 0 || (echo " *** Need to run 'make root-setup' as root with sudo" && exit 1)
+
 	@if which curl > /dev/null; then \
 		curl -L http://cpanmin.us | perl - --self-upgrade; \
 		cpanm uni::perl autodie Config::Tiny AnyEvent::Inotify::Simple EV AnyEvent::XMPP Linux::Proc::Mounts; \
 		echo "Installed Perl dependencies."; \
 	else \
-		echo " *** No curl found, install needed Perl pachages manually "; \
+		echo " *** No curl found, install needed Perl packages manually "; \
 	fi
-	
-	@test `id -u` -eq 0 || (echo " *** Need to run 'make root-setup' as root with sudo" && exit 1)
+
 	@echo "https://webdav.yandex.ru	${DAVFS_MP}	davfs	noauto,user	0 0" >> /etc/fstab
 	@echo "Added fstab entry."
 
@@ -33,10 +35,9 @@ root-setup:
 
 	@echo "Now run 'make setup' to finish non-root configuration."
 
-# README: 0, 1, 3, 4, 6
 
 setup:
-# README: 2, 2.5, 4.5, 4.6, 5, 5.5
+# README.manual: 2, 2.5, 4.5, 4.6, 5, 5.5
 	@test ${YANDEX_LOGIN} || (echo " *** Need YANDEX_LOGIN variable" && exit 1)
 	@test ${YANDEX_PASSWORD} || (echo " *** Need YANDEX_PASSWORD variable" && exit 1)
 
@@ -58,4 +59,4 @@ setup:
 	@echo "folder=${DISK_FOLDER}" >> ${HOME}/.yadiskrc
 	@echo "Created ${HOME}/.yadiskrc with your config."
 
-	@echo "Now, you may run yadisk-sync.pl."
+	@echo "Now you may run yadisk-sync.pl."
