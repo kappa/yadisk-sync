@@ -12,7 +12,9 @@ root-setup:
 	@perl -M5.10.0 -e1 > /dev/null || (echo " *** Need perl 5.10 or higher" && exit 1)
 # unison
 	@which unison > /dev/null || (echo " *** Need unison, try installing unison package" && exit 1)
-	@echo "The system has davfs2, perl 5.10 and unison, good."
+# we need libidn11-dev for XMPP
+	@test -r `pkg-config --variable=includedir libidn`/idna.h || (echo " *** Need libidn headers, try installing libidn11-dev package" && exit 1)
+	@echo "The system has davfs2, perl 5.10, libidn-dev and unison, good."
 
 	@test `id -u` -eq 0 || (echo " *** Need to run 'make root-setup' as root with sudo" && exit 1)
 
