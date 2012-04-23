@@ -33,7 +33,7 @@ root-setup:
 	@usermod -a -G davfs2 ${SUDO_USER}
 	@echo "Added ${SUDO_USER} to davfs2 group."
 
-	@echo "Now run 'make setup' to finish non-root configuration."
+	@echo "Now run 'make YANDEX_LOGIN=<login> YANDEX_PASSWORD=<password> setup' to finish configuration"
 
 
 setup:
