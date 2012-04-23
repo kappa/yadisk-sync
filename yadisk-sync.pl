@@ -57,7 +57,7 @@ my $timer = AnyEvent->timer (after => 5, interval => 10, cb => sub {
 
 my $xmpp = AnyEvent::XMPP::IM::Connection->new(
     jid         => $cfg->{auth}->{login},
-    resource    => 'YandexDisk-kappaclient',
+    resource    => "YandexDisk-kappaclient-$^T-" . rand(),
     host        => 'push.xmpp.yandex.ru',
     port        => 5222,
     password    => $cfg->{auth}->{password},
