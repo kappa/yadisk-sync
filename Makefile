@@ -17,11 +17,11 @@ root-setup:
 	@test `id -u` -eq 0 || (echo " *** Need to run 'make root-setup' as root with sudo" && exit 1)
 
 	@if which curl > /dev/null; then \
-		curl -L http://cpanmin.us | perl - --self-upgrade; \
-		cpanm uni::perl autodie Config::Tiny AnyEvent::Inotify::Simple EV AnyEvent::XMPP Linux::Proc::Mounts; \
-		echo "Installed Perl dependencies."; \
+		curl -L http://cpanmin.us | perl - --self-upgrade && \
+		cpanm uni::perl autodie Config::Tiny AnyEvent::Inotify::Simple EV AnyEvent::XMPP Linux::Proc::Mounts && \
+		echo "Installed Perl dependencies." || exit 1; \
 	else \
-		echo " *** No curl found, install needed Perl packages manually "; \
+		echo " *** No curl found, install required Perl packages manually, see README.manual "; \
 	fi
 
 	@echo "https://webdav.yandex.ru	${DAVFS_MP}	davfs	noauto,user	0 0" >> /etc/fstab
