@@ -13,7 +13,7 @@ https://webdav.yandex.ru	/home/kappa/.yadisk-davfs	davfs	noauto,user	0 0
 
 2.5. chown kappa:kappa ~/.davfs2/secrets && chmod 600 ~/.davfs2/secrets
 
-3. для debian-based необходимо разрешить монтирование davfs2y обычным пользователям
+3. для debian-based необходимо разрешить монтирование davfs2 обычным пользователям
 $ sudo dpkg-reconfigure davfs2
 
 3.5 для fedora монтирование работает после пункта 4
