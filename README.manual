@@ -13,8 +13,10 @@ https://webdav.yandex.ru	/home/kappa/.yadisk-davfs	davfs	noauto,user	0 0
 
 2.5. chown kappa:kappa ~/.davfs2/secrets && chmod 600 ~/.davfs2/secrets
 
-3. sudo dpkg-reconfigure davfs2 --> разрешить монтирование davfs2
-обычным пользователям (не знаю, как это делается не на Убунте).
+3. для debian-based необходимо разрешить монтирование davfs2y обычным пользователям
+$ sudo dpkg-reconfigure davfs2
+
+3.5 для fedora монтирование работает после пункта 4
 
 4. sudo usermod -a -G davfs2 kappa # добавить пользователя в группу davfs2
 
@@ -32,5 +34,12 @@ uni::perl autodie Config::Tiny AnyEvent::Inotify::Simple EV AnyEvent::XMPP Linux
 $ curl -L http://cpanmin.us | perl - --self-upgrade
 $ cpanm <список модулей через пробел>
 
+6.5. установка с perlbrew
+$ curl -kL http://install.perlbrew.pl | bash
+$ perlbrew install perl-5.16.0
+$ perlbrew switch perl-5.16.0
+$ perlbrew install-cpanm
+$ cpanm uni::perl autodie Config::Tiny AnyEvent::Inotify::Simple EV AnyEvent::XMPP Linux::Proc::Mounts
+
 7. yadisk-sync.pl не демонизируется, пока лучше посматривать за ним в
-консоли.
+консоли. Можно использовать screen или tmux.
